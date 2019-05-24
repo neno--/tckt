@@ -6,8 +6,10 @@
  */
 
 allprojects {
+    apply plugin: 'project-report'
+    
     repositories {
-        jcenter() 
+        jcenter()
     }
 }
 
