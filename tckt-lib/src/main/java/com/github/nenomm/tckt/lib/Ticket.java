@@ -10,6 +10,10 @@ public class Ticket {
     private String clientId;
     private long timeCreated;
 
+    public Ticket() {
+        // for jackson
+    }
+
     public Ticket(String ticketId, String clientId, long timeCreated) {
         Validate.notBlank(ticketId, "ticketId must not be null or empty");
         Validate.notBlank(clientId, "clientId must not be null or empty");
