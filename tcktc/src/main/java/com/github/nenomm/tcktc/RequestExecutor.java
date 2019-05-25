@@ -1,6 +1,7 @@
 package com.github.nenomm.tcktc;
 
 import com.github.nenomm.tckt.lib.Ticket;
+import com.github.nenomm.tcktc.rest.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class RequestExecutor {
         executor = Executors.newFixedThreadPool(4);
     }
 
-    public void execute() {
+    void execute() {
         for (int i = 0; i < 4; i++) {
             LOG.info("Starting thread {}/{}", i, 3);
             executor.execute(createTask(i));

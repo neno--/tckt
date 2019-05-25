@@ -1,5 +1,6 @@
 package com.github.nenomm.tcktc;
 
+import com.github.nenomm.tcktc.rest.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
