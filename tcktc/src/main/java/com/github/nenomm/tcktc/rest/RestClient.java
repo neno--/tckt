@@ -10,6 +10,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.PostConstruct;
 
+// for this use case, RestTemplate can be considered thread safe
+// https://stackoverflow.com/questions/22989500/is-resttemplate-thread-safe
 @Component
 public class RestClient {
     private static final String CLIENT_ID_PARAMETER = "clientId";

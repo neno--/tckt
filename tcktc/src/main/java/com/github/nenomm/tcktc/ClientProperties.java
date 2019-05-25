@@ -15,31 +15,31 @@ public class ClientProperties {
         return serverUrl;
     }
 
-    public void setServerUrl(final String p_serverUrl) {
-        serverUrl = p_serverUrl;
+    public void setServerUrl(String serverUrl) {
+        this.serverUrl = serverUrl;
     }
 
     public int getNumberOfThreads() {
         return numberOfThreads;
     }
 
-    public void setNumberOfThreads(final int p_numberOfThreads) {
-        numberOfThreads = p_numberOfThreads;
+    public void setNumberOfThreads(int numberOfThreads) {
+        this.numberOfThreads = numberOfThreads;
     }
 
     public int getNumberOfIterations() {
         return numberOfIterations;
     }
 
-    public void setNumberOfIterations(final int p_numberOfIterations) {
-        numberOfIterations = p_numberOfIterations;
+    public void setNumberOfIterations(int numberOfIterations) {
+        this.numberOfIterations = numberOfIterations;
     }
 
     public String getCommonClientId() {
         return commonClientId;
     }
 
-    public void setCommonClientId(final String p_commonClientId) {
-        commonClientId = p_commonClientId;
+    public void setCommonClientId(String commonClientId) {
+        this.commonClientId = commonClientId;
     }
 }
