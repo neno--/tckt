@@ -17,19 +17,22 @@ public class RequestExecutor {
     private static Logger LOG = LoggerFactory.getLogger(RequestExecutor.class);
 
     @Autowired
+    private ClientProperties clientProperties;
+
+    @Autowired
     private RestClient restClient;
 
     private ExecutorService executor;
 
     @PostConstruct
     private void setUp() {
-        LOG.debug("Creating new thread pool of {} threads", 4);
-        executor = Executors.newFixedThreadPool(4);
+        LOG.debug("Creating new thread pool of {} threads", clientProperties.getNumberOfThreads());
+        executor = Executors.newFixedThreadPool(clientProperties.getNumberOfThreads());
     }
 
     void execute() {
-        for (int i = 0; i < 4; i++) {
-            LOG.info("Starting thread {}/{}", i, 3);
+        for (int i = 0; i < clientProperties.getNumberOfThreads(); i++) {
+            LOG.info("Starting thread {}/{}", i + 1, clientProperties.getNumberOfThreads());
             executor.execute(createTask(i));
         }
 
@@ -40,17 +43,17 @@ public class RequestExecutor {
         return () -> {
             String threadId = Long.toString(Thread.currentThread().getId());
 
-            LOG.info("Starting {} iterations for client thread {}", 1000, threadId);
+            LOG.info("Starting {} iterations for client thread {}", clientProperties.getNumberOfIterations(), threadId);
 
-            for (int i = 0; i < 1000; i++) {
-                Ticket clientTicket = restClient.getTicket("");
-                LOG.info("Iteration {}/{}, thread {} received {} for clientId {}", taskId, i, threadId, clientTicket, threadId);
+            for (int i = 0; i < clientProperties.getNumberOfIterations(); i++) {
+                Ticket clientTicket = restClient.getTicket(threadId);
+                LOG.info("Iteration {}/{}, thread {} received {} for clientId {}", taskId, i + 1, threadId, clientTicket, threadId);
 
-                Ticket commonTicket = restClient.getTicket("common");
-                LOG.info("Iteration {}/{}, thread {} received {} for clientId {}", taskId, i, threadId, commonTicket, "common");
+                Ticket commonTicket = restClient.getTicket(clientProperties.getCommonClientId());
+                LOG.info("Iteration {}/{}, thread {} received {} for clientId {}", taskId, i + 1, threadId, commonTicket, restClient.getTicket(clientProperties.getCommonClientId()));
             }
 
-            LOG.info("End iterations for thread {}", threadId);
+            LOG.info("Finished {} iterations for thread {}", clientProperties.getNumberOfIterations(), threadId);
         };
     }
 }

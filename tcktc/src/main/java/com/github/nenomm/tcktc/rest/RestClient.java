@@ -1,6 +1,7 @@
 package com.github.nenomm.tcktc.rest;
 
 import com.github.nenomm.tckt.lib.Ticket;
+import com.github.nenomm.tcktc.ClientProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,10 @@ import javax.annotation.PostConstruct;
 
 @Component
 public class RestClient {
+    private static final String CLIENT_ID_PARAMETER = "clientId";
+
+    @Autowired
+    private ClientProperties clientProperties;
 
     @Autowired
     private RestTemplateBuilder restTemplateBuilder;
@@ -28,8 +33,8 @@ public class RestClient {
     }
 
     private String constructUrl(String clientId) {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://127.0.0.1:8080/ticket/")
-                .queryParam("clientId", clientId);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(clientProperties.getServerUrl())
+                .queryParam(CLIENT_ID_PARAMETER, clientId);
 
         return builder.toUriString();
     }

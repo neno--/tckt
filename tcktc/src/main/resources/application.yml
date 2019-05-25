@@ -1,0 +1,5 @@
+client:
+  serverUrl: http://localhost:8080/ticket/
+  numberOfThreads: 4
+  numberOfIterations: 1000
+  commonClientId: common
