@@ -3,3 +3,4 @@ client:
   numberOfThreads: 4
   numberOfIterations: 1000
   commonClientId: common
+  validateStatistics: true

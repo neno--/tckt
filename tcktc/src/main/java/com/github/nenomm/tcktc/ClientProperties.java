@@ -8,8 +8,9 @@ import org.springframework.context.annotation.Configuration;
 public class ClientProperties {
     private String serverUrl;
     private int numberOfThreads;
-    private int numberOfIterations;
+    private long numberOfIterations;
     private String commonClientId;
+    private boolean validateStatistics;
 
     public String getServerUrl() {
         return serverUrl;
@@ -27,11 +28,11 @@ public class ClientProperties {
         this.numberOfThreads = numberOfThreads;
     }
 
-    public int getNumberOfIterations() {
+    public long getNumberOfIterations() {
         return numberOfIterations;
     }
 
-    public void setNumberOfIterations(int numberOfIterations) {
+    public void setNumberOfIterations(long numberOfIterations) {
         this.numberOfIterations = numberOfIterations;
     }
 
@@ -41,5 +42,13 @@ public class ClientProperties {
 
     public void setCommonClientId(String commonClientId) {
         this.commonClientId = commonClientId;
+    }
+
+    public boolean isValidateStatistics() {
+        return validateStatistics;
+    }
+
+    public void setValidateStatistics(final boolean p_validateStatistics) {
+        validateStatistics = p_validateStatistics;
     }
 }
