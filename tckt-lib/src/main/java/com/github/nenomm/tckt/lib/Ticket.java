@@ -6,7 +6,7 @@ import org.apache.commons.lang3.Validate;
 import java.util.Objects;
 
 public class Ticket {
-    private long ticketId;
+    private String ticketId;
     private String clientId;
     private long timeCreated;
 
@@ -14,8 +14,8 @@ public class Ticket {
         // for jackson
     }
 
-    public Ticket(long ticketId, String clientId, long timeCreated) {
-        Validate.inclusiveBetween(0, Long.MAX_VALUE, ticketId, "ticketId must not be negative value");
+    public Ticket(String ticketId, String clientId, long timeCreated) {
+        Validate.notBlank(ticketId, "ticketId must not be null or empty");
         Validate.notBlank(clientId, "clientId must not be null or empty");
 
         this.ticketId = ticketId;
@@ -23,7 +23,7 @@ public class Ticket {
         this.timeCreated = timeCreated;
     }
 
-    public long getTicketId() {
+    public String getTicketId() {
         return ticketId;
     }
 
@@ -36,26 +36,26 @@ public class Ticket {
     }
 
     @Override
-    public String toString() {
-        return "Ticket{" +
-                "ticketId='" + ticketId + '\'' +
-                ", clientId='" + clientId + '\'' +
-                ", timeCreated=" + timeCreated +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Ticket)) return false;
         Ticket ticket = (Ticket) o;
-        return getTicketId() == ticket.getTicketId() &&
-                getTimeCreated() == ticket.getTimeCreated() &&
+        return getTimeCreated() == ticket.getTimeCreated() &&
+                getTicketId().equals(ticket.getTicketId()) &&
                 getClientId().equals(ticket.getClientId());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getTicketId(), getClientId(), getTimeCreated());
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "ticketId='" + ticketId + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", timeCreated=" + timeCreated +
+                '}';
     }
 }

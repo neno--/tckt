@@ -15,14 +15,18 @@ public class TicketController {
     private static Logger LOG = LoggerFactory.getLogger(TicketController.class);
 
     @Autowired
+    private ServerProperties serverProperties;
+
+    @Autowired
     private IdGenerator idGenerator;
 
     @GetMapping
     public Ticket greeting(@RequestParam(value = "clientId") String clientId) {
 
         Id id = idGenerator.getNextId(clientId);
+        String ticketId = String.format(serverProperties.getTicketIdFormat(), id.getId());
 
-        Ticket ticket = new Ticket(id.getId(), clientId, id.getTimeCreated());
+        Ticket ticket = new Ticket(ticketId, clientId, id.getTimeCreated());
 
         LOG.info("Created new ticket {}", ticket);
 
