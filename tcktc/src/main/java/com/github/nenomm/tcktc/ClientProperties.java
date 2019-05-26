@@ -84,7 +84,7 @@ public class ClientProperties {
         return statistics;
     }
 
-    public void setStatistics(final Statistics statistics) {
+    public void setStatistics(Statistics statistics) {
         this.statistics = statistics;
     }
 }

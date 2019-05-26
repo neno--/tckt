@@ -12,7 +12,7 @@ public class ServerProperties {
         return ticketIdFormat;
     }
 
-    public void setTicketIdFormat(final String ticketIdFormat) {
+    public void setTicketIdFormat(String ticketIdFormat) {
         this.ticketIdFormat = ticketIdFormat;
     }
 }

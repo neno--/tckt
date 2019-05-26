@@ -59,7 +59,7 @@ public class Statistics {
     public void analyze() {
         boolean commonValidation = true;
         double commonTotalTimeSeconds = 0;
-        List<Ticket> allCommonTickets = new ArrayList((int) Math.min(clientProperties.getNumberOfIterations() * 4, Integer.MAX_VALUE));
+        List<Ticket> allCommonTickets = new ArrayList((int) Math.min(clientProperties.getNumberOfThreads() * clientProperties.getNumberOfIterations(), Integer.MAX_VALUE));
 
         for (Entry<String, WorkerStatistics> entry : statistics.entrySet()) {
             String clientId = entry.getKey();
@@ -80,7 +80,7 @@ public class Statistics {
         }
 
         if (clientProperties.getStatistics().isValidate()) {
-            if (checkTicketContent(allCommonTickets, 0, clientProperties.getNumberOfIterations() * 4)) {
+            if (checkTicketContent(allCommonTickets, 0, clientProperties.getNumberOfThreads() * clientProperties.getNumberOfIterations())) {
                 LOG.info("All clients common tickets validation OK");
             } else {
                 LOG.error("All client common tickets validation FAILED");
