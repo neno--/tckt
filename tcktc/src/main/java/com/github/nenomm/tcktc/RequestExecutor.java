@@ -47,10 +47,10 @@ public class RequestExecutor {
 
             for (int i = 0; i < clientProperties.getNumberOfIterations(); i++) {
                 Ticket clientTicket = restClient.getTicket(threadId);
-                LOG.info("Iteration {}/{}, thread {} received {} for clientId {}", taskId, i + 1, threadId, clientTicket, threadId);
+                LOG.info("Iteration {}-{}, thread {} received {} for clientId {}", i + 1, taskId + 1, threadId, clientTicket, threadId);
 
                 Ticket commonTicket = restClient.getTicket(clientProperties.getCommonClientId());
-                LOG.info("Iteration {}/{}, thread {} received {} for clientId {}", taskId, i + 1, threadId, commonTicket, restClient.getTicket(clientProperties.getCommonClientId()));
+                LOG.info("Iteration {}-{}, thread {} received {} for clientId {}", i + 1, taskId + 1, threadId, commonTicket, threadId);
             }
 
             LOG.info("Finished {} iterations for thread {}", clientProperties.getNumberOfIterations(), threadId);
