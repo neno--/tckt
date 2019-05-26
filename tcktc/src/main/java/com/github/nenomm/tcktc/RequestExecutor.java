@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -22,21 +22,30 @@ public class RequestExecutor {
     @Autowired
     private RestClient restClient;
 
-    private ExecutorService executor;
+    private Set<Thread> workers;
 
     @PostConstruct
     private void setUp() {
-        LOG.debug("Creating new thread pool of {} threads", clientProperties.getNumberOfThreads());
-        executor = Executors.newFixedThreadPool(clientProperties.getNumberOfThreads());
+        workers = new HashSet<>(clientProperties.getNumberOfThreads());
     }
 
     void execute() {
         for (int i = 0; i < clientProperties.getNumberOfThreads(); i++) {
             LOG.info("Starting thread {}/{}", i + 1, clientProperties.getNumberOfThreads());
-            executor.execute(createTask(i));
+
+            Thread worker = new Thread(createTask(i));
+            worker.start();
+
+            workers.add(worker);
         }
 
-        executor.shutdown();
+        workers.forEach(worker -> {
+            try {
+                worker.join();
+            } catch (InterruptedException e) {
+                LOG.error("Worker {} interrupted!", worker.getId(), e);
+            }
+        });
     }
 
     private Runnable createTask(int taskId) {
