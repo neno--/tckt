@@ -4,3 +4,4 @@ client:
   numberOfIterations: 1000
   commonClientId: common
   validateStatistics: true
+  ticketIdFormat: "ticket-%d"

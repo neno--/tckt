@@ -11,6 +11,7 @@ public class ClientProperties {
     private long numberOfIterations;
     private String commonClientId;
     private boolean validateStatistics;
+    private String ticketIdFormat;
 
     public String getServerUrl() {
         return serverUrl;
@@ -48,7 +49,15 @@ public class ClientProperties {
         return validateStatistics;
     }
 
-    public void setValidateStatistics(final boolean p_validateStatistics) {
-        validateStatistics = p_validateStatistics;
+    public void setValidateStatistics(boolean validateStatistics) {
+        this.validateStatistics = validateStatistics;
+    }
+
+    public String getTicketIdFormat() {
+        return ticketIdFormat;
+    }
+
+    public void setTicketIdFormat(String ticketIdFormat) {
+        this.ticketIdFormat = ticketIdFormat;
     }
 }

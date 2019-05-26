@@ -74,6 +74,7 @@ public class Statistics {
             LOG.info("Client {} tickets took {} seconds.", clientId, workerStatistics.getClientStatistics().getTotalTimeSeconds());
 
             allCommonTickets.addAll(workerStatistics.getCommonTickets());
+            commonTotalTimeSeconds += workerStatistics.getCommonStatistics().getTotalTimeSeconds();
         }
 
         if (checkTicketContent(allCommonTickets, 0, clientProperties.getNumberOfIterations() * 4)) {
@@ -86,15 +87,16 @@ public class Statistics {
     }
 
     private boolean checkTicketContent(List<Ticket> tickets, long startInclusive, long endExclusive) {
-        // numbers [0, clientProperties.getNumberOfIterations)
-        Set<Long> numbers = LongStream.range(startInclusive, endExclusive).boxed().collect(Collectors.toSet());
+        // [0, n) -> ["ticket-0", "ticket-n")
+        Set<String> expectedIds = LongStream.range(startInclusive, endExclusive).boxed().map(number ->
+                String.format(clientProperties.getTicketIdFormat(), number)).collect(Collectors.toSet());
 
-        if (numbers.size() != tickets.size()) {
+        if (expectedIds.size() != tickets.size()) {
             return false;
         }
 
-        tickets.forEach(ticket -> numbers.remove(ticket.getTicketId()));
+        tickets.forEach(ticket -> expectedIds.remove(ticket.getTicketId()));
 
-        return numbers.isEmpty();
+        return expectedIds.isEmpty();
     }
 }
