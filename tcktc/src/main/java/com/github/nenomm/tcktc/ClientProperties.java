@@ -1,5 +1,6 @@
 package com.github.nenomm.tcktc;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,8 +11,42 @@ public class ClientProperties {
     private int numberOfThreads;
     private long numberOfIterations;
     private String commonClientId;
-    private boolean validateStatistics;
-    private String ticketIdFormat;
+
+    @Autowired
+    private Statistics statistics;
+
+    @Configuration
+    @ConfigurationProperties(prefix = "statistics")
+    public class Statistics {
+        private boolean active;
+        private boolean validate;
+        private String ticketIdFormat;
+
+        public boolean isActive() {
+            return active;
+        }
+
+        public void setActive(boolean active) {
+            this.active = active;
+        }
+
+        public boolean isValidate() {
+            return validate;
+        }
+
+        public void setValidate(boolean validate) {
+            this.validate = validate;
+        }
+
+        public String getTicketIdFormat() {
+            return ticketIdFormat;
+        }
+
+        public void setTicketIdFormat(String ticketIdFormat) {
+            this.ticketIdFormat = ticketIdFormat;
+        }
+
+    }
 
     public String getServerUrl() {
         return serverUrl;
@@ -45,19 +80,11 @@ public class ClientProperties {
         this.commonClientId = commonClientId;
     }
 
-    public boolean isValidateStatistics() {
-        return validateStatistics;
+    public Statistics getStatistics() {
+        return statistics;
     }
 
-    public void setValidateStatistics(boolean validateStatistics) {
-        this.validateStatistics = validateStatistics;
-    }
-
-    public String getTicketIdFormat() {
-        return ticketIdFormat;
-    }
-
-    public void setTicketIdFormat(String ticketIdFormat) {
-        this.ticketIdFormat = ticketIdFormat;
+    public void setStatistics(final Statistics statistics) {
+        this.statistics = statistics;
     }
 }

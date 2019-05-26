@@ -3,5 +3,7 @@ client:
   numberOfThreads: 4
   numberOfIterations: 1000
   commonClientId: common
-  validateStatistics: true
-  ticketIdFormat: "ticket-%d"
+  statistics:
+    active: true
+    validate: true
+    ticketIdFormat: "ticket-%d"

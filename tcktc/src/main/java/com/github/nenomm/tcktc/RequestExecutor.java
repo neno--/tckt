@@ -51,7 +51,7 @@ public class RequestExecutor {
             }
         });
 
-        runStatistics(() -> statistics.validate());
+        doStatistics(() -> statistics.analyze());
     }
 
     private Runnable createTask(int taskId) {
@@ -59,19 +59,19 @@ public class RequestExecutor {
             String threadId = Long.toString(Thread.currentThread().getId());
 
             LOG.info("Starting {} iterations for client thread {}", clientProperties.getNumberOfIterations(), threadId);
-            runStatistics(() -> statistics.init(threadId));
+            doStatistics(() -> statistics.init(threadId));
 
             for (int i = 0; i < clientProperties.getNumberOfIterations(); i++) {
 
-                runStatistics(() -> statistics.start(threadId));
+                doStatistics(() -> statistics.start(threadId));
                 Ticket clientTicket = restClient.getTicket(threadId);
-                runStatistics(() -> statistics.lap(threadId, clientTicket));
+                doStatistics(() -> statistics.lap(threadId, clientTicket));
                 LOG.info("Iteration {}-{}, thread {} received {} for clientId {}", i + 1, taskId + 1, threadId, clientTicket, threadId);
 
 
-                runStatistics(() -> statistics.startCommon(threadId));
+                doStatistics(() -> statistics.startCommon(threadId));
                 Ticket commonTicket = restClient.getTicket(clientProperties.getCommonClientId());
-                runStatistics(() -> statistics.lap(threadId, commonTicket));
+                doStatistics(() -> statistics.lap(threadId, commonTicket));
                 LOG.info("Iteration {}-{}, thread {} received {} for clientId {}", i + 1, taskId + 1, threadId, commonTicket, threadId);
             }
 
@@ -80,8 +80,8 @@ public class RequestExecutor {
     }
 
     // Runnable is run from the same thread.
-    private void runStatistics(Runnable runnable) {
-        if (clientProperties.isValidateStatistics()) {
+    private void doStatistics(Runnable runnable) {
+        if (clientProperties.getStatistics().isActive()) {
             runnable.run();
         }
     }

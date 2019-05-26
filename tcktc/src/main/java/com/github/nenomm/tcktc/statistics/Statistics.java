@@ -56,7 +56,7 @@ public class Statistics {
         }
     }
 
-    public void validate() {
+    public void analyze() {
         boolean commonValidation = true;
         double commonTotalTimeSeconds = 0;
         List<Ticket> allCommonTickets = new ArrayList((int) Math.min(clientProperties.getNumberOfIterations() * 4, Integer.MAX_VALUE));
@@ -65,10 +65,12 @@ public class Statistics {
             String clientId = entry.getKey();
             WorkerStatistics workerStatistics = entry.getValue();
 
-            if (checkTicketContent(workerStatistics.getClientTickets(), 0, clientProperties.getNumberOfIterations())) {
-                LOG.info("Client {} tickets validation OK", clientId);
-            } else {
-                LOG.error("Client {} tickets validation FAILED", clientId);
+            if (clientProperties.getStatistics().isValidate()) {
+                if (checkTicketContent(workerStatistics.getClientTickets(), 0, clientProperties.getNumberOfIterations())) {
+                    LOG.info("Client {} tickets validation OK", clientId);
+                } else {
+                    LOG.error("Client {} tickets validation FAILED", clientId);
+                }
             }
 
             LOG.info("Client {} tickets took {} seconds.", clientId, workerStatistics.getClientStatistics().getTotalTimeSeconds());
@@ -77,10 +79,12 @@ public class Statistics {
             commonTotalTimeSeconds += workerStatistics.getCommonStatistics().getTotalTimeSeconds();
         }
 
-        if (checkTicketContent(allCommonTickets, 0, clientProperties.getNumberOfIterations() * 4)) {
-            LOG.info("All clients common tickets validation OK");
-        } else {
-            LOG.error("All client common tickets validation FAILED");
+        if (clientProperties.getStatistics().isValidate()) {
+            if (checkTicketContent(allCommonTickets, 0, clientProperties.getNumberOfIterations() * 4)) {
+                LOG.info("All clients common tickets validation OK");
+            } else {
+                LOG.error("All client common tickets validation FAILED");
+            }
         }
 
         LOG.info("Client {} took {} seconds.", clientProperties.getCommonClientId(), commonTotalTimeSeconds);
@@ -89,7 +93,7 @@ public class Statistics {
     private boolean checkTicketContent(List<Ticket> tickets, long startInclusive, long endExclusive) {
         // [0, n) -> ["ticket-0", "ticket-n")
         Set<String> expectedIds = LongStream.range(startInclusive, endExclusive).boxed().map(number ->
-                String.format(clientProperties.getTicketIdFormat(), number)).collect(Collectors.toSet());
+                String.format(clientProperties.getStatistics().getTicketIdFormat(), number)).collect(Collectors.toSet());
 
         if (expectedIds.size() != tickets.size()) {
             return false;
