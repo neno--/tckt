@@ -1,4 +1,4 @@
-package com.github.nenomm.tckts.id.defaultimpl;
+package com.github.nenomm.tckts.id.finelocking;
 
 // This class is NOT thread safe.
 public class Counter {

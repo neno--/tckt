@@ -1,6 +1,7 @@
 package com.github.nenomm.tckts;
 
 import com.github.nenomm.tckt.lib.Ticket;
+import com.github.nenomm.tckts.config.ServerProperties;
 import com.github.nenomm.tckts.id.Id;
 import com.github.nenomm.tckts.id.IdGenerator;
 import org.slf4j.Logger;
