@@ -3,7 +3,7 @@ package com.github.nenomm.tckts.id.coarselocking;
 import com.github.nenomm.tckts.config.ServerProperties;
 import com.github.nenomm.tckts.id.Id;
 import com.github.nenomm.tckts.id.IdGenerator;
-import com.github.nenomm.tckts.id.finelocking.Counter;
+import com.github.nenomm.tckts.id.Counter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

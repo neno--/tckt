@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "server")
 public class ServerProperties {
     private String ticketIdFormat;
+    private String commonClientId;
 
     @Autowired
     private IdGenerator idGenerator;
@@ -41,6 +42,14 @@ public class ServerProperties {
 
     public void setTicketIdFormat(String ticketIdFormat) {
         this.ticketIdFormat = ticketIdFormat;
+    }
+
+    public String getCommonClientId() {
+        return commonClientId;
+    }
+
+    public void setCommonClientId(String commonClientId) {
+        this.commonClientId = commonClientId;
     }
 
     public IdGenerator getIdGenerator() {

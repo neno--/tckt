@@ -1,12 +1,15 @@
 package com.github.nenomm.tcktc.rest;
 
 import com.github.nenomm.tckt.lib.Ticket;
+import com.github.nenomm.tckt.lib.TicketRequest;
 import com.github.nenomm.tcktc.ClientProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.annotation.PostConstruct;
 
@@ -14,8 +17,6 @@ import javax.annotation.PostConstruct;
 // https://stackoverflow.com/questions/22989500/is-resttemplate-thread-safe
 @Component
 public class RestClient {
-    private static final String CLIENT_ID_PARAMETER = "clientId";
-
     @Autowired
     private ClientProperties clientProperties;
 
@@ -23,21 +24,16 @@ public class RestClient {
     private RestTemplateBuilder restTemplateBuilder;
 
     private RestTemplate restTemplate;
+    private URI serverUri;
 
 
     @PostConstruct
-    private void setUp() {
+    private void setUp() throws URISyntaxException {
         restTemplate = restTemplateBuilder.errorHandler(new RestTemplateResponseErrorHandler()).build();
+        serverUri = new URI(clientProperties.getServerUrl());
     }
 
     public Ticket getTicket(String clientId) {
-        return restTemplate.getForObject(constructUrl(clientId), Ticket.class);
-    }
-
-    private String constructUrl(String clientId) {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(clientProperties.getServerUrl())
-                .queryParam(CLIENT_ID_PARAMETER, clientId);
-
-        return builder.toUriString();
+        return restTemplate.postForObject(serverUri, new TicketRequest(clientId), Ticket.class);
     }
 }

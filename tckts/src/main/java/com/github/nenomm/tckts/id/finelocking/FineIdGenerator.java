@@ -1,6 +1,7 @@
 package com.github.nenomm.tckts.id.finelocking;
 
 import com.github.nenomm.tckts.config.ServerProperties;
+import com.github.nenomm.tckts.id.Counter;
 import com.github.nenomm.tckts.id.Id;
 import com.github.nenomm.tckts.id.IdGenerator;
 import org.slf4j.Logger;
