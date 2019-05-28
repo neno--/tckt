@@ -5,6 +5,14 @@
 ## Build
 `./gradlew bootJar`
 
+### jar locations:
+- `/tckt/tcktc/build/libs/tcktc.jar`
+- `/tckt/tckts/build/libs/tckts.jar`
+
+### conf locations:
+- `/tckt/tcktc/build/resources/main/application.yml`
+- `/tckt/tckts/build/resources/main/application.yml`
+
 ## Test
 `./gradlew check`
 
