@@ -30,10 +30,16 @@ public class FineIdGenerator implements IdGenerator {
 
     @Override
     public Id getNextId(String clientId) {
-        Counter counter = counters.getOrDefault(clientId, new Counter());
+        Counter counter = counters.get(clientId);
+
+        if (counter == null) {
+            synchronized (this) {
+                counter = counters.getOrDefault(clientId, new Counter());
+                counters.putIfAbsent(clientId, counter);
+            }
+        }
 
         synchronized (counter) {
-            counters.putIfAbsent(clientId, counter);
             counter.inc();
 
             LOG.info("Generated id {} at {} for client {}", counter.getCount(), counter.getLastActivity(), clientId);
