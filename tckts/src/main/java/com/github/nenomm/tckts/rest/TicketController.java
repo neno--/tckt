@@ -1,4 +1,4 @@
-package com.github.nenomm.tckts;
+package com.github.nenomm.tckts.rest;
 
 import com.github.nenomm.tckt.lib.InvalidTicketRequestException;
 import com.github.nenomm.tckt.lib.Ticket;
@@ -9,8 +9,10 @@ import com.github.nenomm.tckts.id.IdGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController("/ticket")
@@ -23,7 +25,8 @@ public class TicketController {
     @Autowired
     private IdGenerator idGenerator;
 
-    @PostMapping
+    @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
     public Ticket createTicket(@RequestBody TicketRequest ticketRequest) {
         validate(ticketRequest);
 
@@ -45,13 +48,13 @@ public class TicketController {
             number = Long.parseLong(ticketRequest.getClientId());
         } catch (NumberFormatException e) {
             if (!serverProperties.getCommonClientId().equals(ticketRequest.getClientId())) {
-                throw new InvalidTicketRequestException("invalid client Id");
+                throw new InvalidTicketRequestException("Invalid Client Id");
             }
             return;
         }
 
         if (number <= 0) {
-            throw new InvalidTicketRequestException("Invalid client id");
+            throw new InvalidTicketRequestException("Invalid Client Id");
         }
     }
 }
