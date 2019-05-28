@@ -49,12 +49,12 @@ public class WorkerStatistics {
     }
 
     public StopWatch getClientStatistics() {
-        checkIsClientRunning();
+        //checkIsClientRunning(); - we need to check if it is still running
         return stopWatch;
     }
 
     public StopWatch getCommonStatistics() {
-        checkIsCommonRunning();
+        //checkIsClientRunning(); - we need to check if it is still running
         return commonStopWatch;
     }
 

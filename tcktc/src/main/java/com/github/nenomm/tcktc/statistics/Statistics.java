@@ -58,6 +58,8 @@ public class Statistics {
     }
 
     public void analyze() {
+        stopAllUnfinishedTasks();
+
         boolean commonValidation = true;
         double commonTotalTimeSeconds = 0;
         List<Ticket> allCommonTickets = new ArrayList((int) Math.min(clientProperties.getNumberOfThreads() * clientProperties.getNumberOfIterations(), Integer.MAX_VALUE));
@@ -103,5 +105,18 @@ public class Statistics {
         tickets.forEach(ticket -> expectedIds.remove(ticket.getTicketId()));
 
         return expectedIds.isEmpty();
+    }
+
+    // in case of some rest client exception
+    private void stopAllUnfinishedTasks() {
+        for (WorkerStatistics workerStatistics : statistics.values()) {
+            if (workerStatistics.getClientStatistics().isRunning()) {
+                workerStatistics.getClientStatistics().stop();
+            }
+
+            if (workerStatistics.getCommonStatistics().isRunning()) {
+                workerStatistics.getCommonStatistics().stop();
+            }
+        }
     }
 }
