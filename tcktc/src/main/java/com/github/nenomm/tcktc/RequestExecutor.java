@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -64,14 +65,15 @@ public class RequestExecutor {
             for (int i = 0; i < clientProperties.getNumberOfIterations(); i++) {
 
                 doStatistics(() -> statistics.start(threadId));
-                Ticket clientTicket = restClient.getTicket(threadId);
+                Optional<Ticket> clientTicket = restClient.tryToCreateTicket(threadId);
                 doStatistics(() -> statistics.lap(threadId, clientTicket));
+
                 LOG.info("Iteration {}-{}, thread {} received {} for clientId {}", i + 1, taskId + 1, threadId, clientTicket, threadId);
 
-
                 doStatistics(() -> statistics.startCommon(threadId));
-                Ticket commonTicket = restClient.getTicket(clientProperties.getCommonClientId());
-                doStatistics(() -> statistics.lap(threadId, commonTicket));
+                Optional<Ticket> commonTicket = restClient.tryToCreateTicket(clientProperties.getCommonClientId());
+                doStatistics(() -> statistics.lapCommon(threadId, commonTicket));
+
                 LOG.info("Iteration {}-{}, thread {} received {} for clientId {}", i + 1, taskId + 1, threadId, commonTicket, threadId);
             }
 

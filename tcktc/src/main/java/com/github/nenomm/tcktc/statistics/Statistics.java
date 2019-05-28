@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -48,12 +49,12 @@ public class Statistics {
         statistics.get(clientId).startCommon();
     }
 
-    public void lap(String clientId, Ticket ticket) {
-        if (clientProperties.getCommonClientId().equals(ticket.getClientId())) {
-            statistics.get(clientId).lapCommon(ticket);
-        } else {
-            statistics.get(clientId).lap(ticket);
-        }
+    public void lap(String clientId, Optional<Ticket> ticket) {
+        statistics.get(clientId).lap(ticket);
+    }
+
+    public void lapCommon(String clientId, Optional<Ticket> ticket) {
+        statistics.get(clientId).lapCommon(ticket);
     }
 
     public void analyze() {

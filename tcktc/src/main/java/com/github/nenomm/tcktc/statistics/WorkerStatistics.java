@@ -6,6 +6,7 @@ import org.springframework.util.StopWatch;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class WorkerStatistics {
     private StopWatch stopWatch;
@@ -27,18 +28,24 @@ public class WorkerStatistics {
         stopWatch.start();
     }
 
-    public void lap(Ticket ticket) {
+    public void lap(Optional<Ticket> ticket) {
         stopWatch.stop();
-        tickets.add(ticket);
+
+        if (ticket.isPresent()) {
+            tickets.add(ticket.get());
+        }
     }
 
     public void startCommon() {
         commonStopWatch.start();
     }
 
-    public void lapCommon(Ticket ticket) {
+    public void lapCommon(Optional<Ticket> ticket) {
         commonStopWatch.stop();
-        commonTickets.add(ticket);
+
+        if (ticket.isPresent()) {
+            commonTickets.add(ticket.get());
+        }
     }
 
     public StopWatch getClientStatistics() {
